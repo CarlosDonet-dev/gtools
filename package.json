@@ -1,0 +1,35 @@
+{
+  "name": "@cdonet/gtools",
+  "version": "1.0.0",
+  "description": "Human-friendly Git CLI tools",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "gbranch": "./bin/gbranch.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "files": [
+    "bin/",
+    "LICENSE",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CarlosDonet-dev/gtools.git"
+  },
+  "author": "Carlos Donet",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CarlosDonet-dev/gtools/issues"
+  },
+  "homepage": "https://github.com/CarlosDonet-dev/gtools#readme",
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "chalk": "^5.4.1"
+  }
+}
