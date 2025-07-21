@@ -1,8 +1,43 @@
 #!/usr/bin/env node
 import { execSync } from 'child_process';
 import prompts from 'prompts';
+import { getConfigValue } from './utils/config.js';
 
-const PREFIX = 'GES3-';
+const PREFIX = getConfigValue('PREFIX', '');
+
+function printHelp() {
+  console.log(`
+Usage: gcheck [OPTIONS] <ticket-number|branch-name>
+
+Checkout a remote Git branch following your team's naming conventions.
+
+Options:
+  -r           Checkout a release branch.
+               Example: gcheck -r planner
+               Checks out: origin/release/planner
+
+  -f           Checkout a fix branch.
+               Example: gcheck -f 1234
+               Checks out: origin/fix/{PREFIX}1234
+
+  -o           Checkout other branch.
+               Example: gcheck -o main
+               Checks out: origin/main
+
+  -h, --help   Show this help message and exit.
+
+If no option (-r or -f) is specified, gcheck defaults to checking out a feature branch.
+
+Examples:
+  gcheck 1234          Checkout feature branch origin/feat/{PREFIX}1234
+  gcheck -r planner    Checkout release branch origin/release/planner
+  gcheck -f 5678       Checkout fix branch origin/fix/{PREFIX}5678
+
+Notes:
+  - This command automatically fetches remote branches before checking out.
+  - The ticket-number is appended to the configured prefix in feature and fix branches (see gconfig command).
+`);
+}
 
 type BranchType = 'feat' | 'fix' | 'release' | 'other';
 
@@ -76,6 +111,11 @@ function filterBranches(branches: string[]): string[] {
 }
 
 async function main() {
+  const args = process.argv.slice(2);
+  if (args.includes('--help') || args.includes('-h')) {
+    printHelp();
+    return;
+  }
   const { type, ticket } = parseArgs();
 
   let branches = getMatchingBranches(type, ticket);

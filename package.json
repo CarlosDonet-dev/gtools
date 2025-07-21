@@ -6,7 +6,16 @@
   "type": "module",
   "bin": {
     "gbranch": "./bin/gbranch.js",
-    "gcheck": "./bin/gcheck.js"
+    "gcheck": "./bin/gcheck.js",
+    "gchill": "./bin/gchill.js",
+    "gclean": "./bin/gclean.js",
+    "gconfig": "./bin/gconfig.js",
+    "gfetch": "./bin/gfetch.js",
+    "gmerge": "./bin/gmerge.js",
+    "gok": "./bin/gok.js",
+    "gpull": "./bin/gpull.js",
+    "gpush": "./bin/gpush.js",
+    "gstash": "./bin/gstash.js"
   },
   "scripts": {
     "build": "tsc",
@@ -33,6 +42,9 @@
   },
   "dependencies": {
     "chalk": "^5.4.1",
+    "execa": "^9.6.0",
+    "inquirer": "^12.8.1",
+    "ora": "^8.2.0",
     "prompts": "^2.4.2"
   }
 }

@@ -11,6 +11,28 @@ type BranchGroups = {
   other: string[];
 };
 
+function printHelp() {
+  console.log(`
+Usage: gbranch
+
+List local Git branches grouped by type in a readable format.
+
+Groups:
+  Features        Branches starting with 'feat/' or 'feature/'
+  Fixes           Branches starting with 'fix/' or 'fixes/'
+  Releases        Branches starting with 'release/' or 'releases/'
+  Main Branches   For main branches like 'main', 'master' or 'dev'
+  Other Branches  All other branches
+
+The current branch is highlighted in green with a leading '*'.
+
+Example:
+  gbranch
+
+Shows your branches grouped and highlighted.
+`);
+}
+
 function getLocalBranches(): { branches: string[]; current: string } {
   try {
     const output = execSync('git branch', { encoding: 'utf-8' });
@@ -49,10 +71,13 @@ function groupBranches(branches: string[]): BranchGroups {
   };
 
   for (const branch of branches) {
-    if (branch.startsWith('feat/')) groups.feat.push(branch);
-    else if (branch.startsWith('fix/')) groups.fix.push(branch);
+    if (branch.startsWith('feat/') || branch.startsWith('feature/'))
+      groups.feat.push(branch);
+    else if (branch.startsWith('fix/') || branch.startsWith('fixes/'))
+      groups.fix.push(branch);
     else if (branch.startsWith('release/')) groups.release.push(branch);
-    else if (branch === 'main' || branch === 'dev') groups.main.push(branch);
+    else if (branch === 'main' || branch === 'master' || branch === 'dev')
+      groups.main.push(branch);
     else groups.other.push(branch);
   }
 
@@ -79,6 +104,11 @@ function printGroup(
 }
 
 function run() {
+  const args = process.argv.slice(2);
+  if (args.includes('--help') || args.includes('-h')) {
+    printHelp();
+    return;
+  }
   const { branches, current } = getLocalBranches();
   const groups = groupBranches(branches);
 
